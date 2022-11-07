@@ -55,10 +55,13 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
                 mr="xl"
               />
             </MediaQuery>
-              <Text>
+            <Text>
                 Application header
-              </Text>
+            </Text>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Button style={{marginRight: '10px'}}>What a Button</Button>
               <ColorSchemeToggle />
+            </div>
 
             {/* <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
             </div> */}
