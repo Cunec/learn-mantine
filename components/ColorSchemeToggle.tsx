@@ -5,7 +5,7 @@ export function ColorSchemeToggle() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   return (
-    <Group align='center' position="center">
+    <Group align='center' position="center" ml="10px">
       <ActionIcon
         onClick={() => toggleColorScheme()}
         size="xl"

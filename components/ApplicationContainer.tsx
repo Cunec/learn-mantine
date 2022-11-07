@@ -59,7 +59,7 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
                 Application header
             </Text>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Button style={{marginRight: '10px'}}>What a Button</Button>
+              <Button style={{marginLeft: '5px'}}>What a Button</Button>
               <ColorSchemeToggle />
             </div>
 
