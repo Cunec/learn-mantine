@@ -10,7 +10,10 @@ import {
   MediaQuery,
   Burger,
   useMantineTheme,
+  Button,
 } from '@mantine/core';
+import { ColorSchemeToggle } from './ColorSchemeToggle';
+import { wrap } from 'module';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -30,7 +33,9 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
       asideOffsetBreakpoint="sm"
       navbar={
         <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
-          <Text>Application navbar</Text>
+          <Text>
+            Application navbar
+          </Text>
         </Navbar>
       }
       footer={
@@ -40,7 +45,7 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
       }
       header={
         <Header height={{ base: 50, md: 70 }} p="md">
-          <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
             <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
               <Burger
                 opened={opened}
@@ -50,10 +55,13 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
                 mr="xl"
               />
             </MediaQuery>
+              <Text>
+                Application header
+              </Text>
+              <ColorSchemeToggle />
 
-            <Text>
-              Application header
-            </Text>
+            {/* <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+            </div> */}
           </div>
         </Header>
       }

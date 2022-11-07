@@ -1,11 +1,11 @@
-import { AppShell, Navbar, Header, Group } from '@mantine/core';
+// import { Group, useMantineTheme } from '@mantine/core';
 
-function About() {
+export default function About() {
+  // const theme = useMantineTheme();
   return (
-    <Group>
-      about
-    </Group>
+    // <Group>
+    //   about
+    // </Group>
+    <div></div>
   );
 }
-
-export default About;
