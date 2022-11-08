@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import {
   AppShell,
@@ -13,7 +12,6 @@ import {
   Button,
 } from '@mantine/core';
 import { ColorSchemeToggle } from './ColorSchemeToggle';
-import { wrap } from 'module';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -36,6 +34,9 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
           <Text>
             Application navbar
           </Text>
+          {/* <Button style={{marginTop: '5px'}}>Test1</Button>
+          <Button style={{marginTop: '5px'}}>Test2</Button>
+          <Button style={{marginTop: '5px'}}>Test3</Button> */}
         </Navbar>
       }
       footer={
@@ -44,27 +45,27 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
         </Footer>
       }
       header={
-        <Header height={{ base: 50, md: 70 }} p="md">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
-            <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-              <Burger
-                opened={opened}
-                onClick={() => setOpened((o) => !o)}
-                size="sm"
-                color={theme.colors.gray[6]}
-                mr="xl"
-              />
-            </MediaQuery>
-            <Text>
-                Application header
-            </Text>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Button style={{marginLeft: '5px'}}>What a Button</Button>
-              <ColorSchemeToggle />
-            </div>
-
-            {/* <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-            </div> */}
+        <Header height={{ base: 50, md: 50 }} p="md" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
+          <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+            <Burger
+              opened={opened}
+              onClick={() => setOpened((o) => !o)}
+              size="sm"
+              color={theme.colors.gray[6]}
+              mr="xl"
+            />
+          </MediaQuery>
+          <Text>
+              Application header
+          </Text>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <Button variant="outline" color="gray" radius="xl">
+              Sign Up
+            </Button>
+            <Button color="gray" radius="xl">
+              Log In
+            </Button>
+            <ColorSchemeToggle />
           </div>
         </Header>
       }
