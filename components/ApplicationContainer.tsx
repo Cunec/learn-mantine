@@ -62,6 +62,11 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
             href="/about"
             label="About"
             icon={<IconApple size={16} stroke={1.5} />} />
+          <NavLink 
+            component={Link}
+            href="/test/login"
+            label="LoginTest"
+            icon={<IconApple size={16} stroke={1.5} />} />
           <NavLink label="Disabled" icon={<IconCircleOff size={16} stroke={1.5} />} disabled />
         </Navbar>
       }
