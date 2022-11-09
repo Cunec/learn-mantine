@@ -11,11 +11,12 @@ import {
   useMantineTheme,
   Button,
   NavLink,
+  Modal,
 } from '@mantine/core';
 import { ColorSchemeToggle } from './ColorSchemeToggle';
 import { IconApple, IconChevronRight, IconCircleOff, IconGauge, IconHome2 } from '@tabler/icons';
-import board from '../pages/board'
 import Link from 'next/link';
+import { AuthenticationForm } from './AuthenticationForm/AuthenticationForm';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -24,7 +25,16 @@ type LayoutProps = {
 export const ApplicationContainer = ({children}: LayoutProps) => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+  const [loginModalOpened, setLoginModalOpened] = useState(false);
   return (
+    <>
+    <Modal
+      opened={loginModalOpened}
+      onClose={() => setLoginModalOpened(false)}
+    >
+      <AuthenticationForm useLoginFormType={false} noShadow />
+    </Modal>
+
     <AppShell
       styles={{
         main: {
@@ -75,10 +85,21 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
               Test...
           </Text>
           <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Button variant="outline" color="gray" radius="xl">
+            <Button
+              //component={Link}
+              //href="/auth/register"
+              onClick={() => setLoginModalOpened(true)}
+              variant="outline"
+              color="gray"
+              radius="xl">
               Sign Up
             </Button>
-            <Button color="gray" radius="xl">
+            <Button
+              //component={Link}
+              //href="/auth/login"
+              onClick={() => setLoginModalOpened(true)}
+              color="gray"
+              radius="xl">
               Log In
             </Button>
             <ColorSchemeToggle />
@@ -90,6 +111,7 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
         {children}
       </div>
     </AppShell>
+    </>
   );
 }
 
