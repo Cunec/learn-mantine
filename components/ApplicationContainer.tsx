@@ -10,8 +10,10 @@ import {
   Burger,
   useMantineTheme,
   Button,
+  NavLink,
 } from '@mantine/core';
 import { ColorSchemeToggle } from './ColorSchemeToggle';
+import { IconApple, IconChevronRight, IconCircleOff, IconGauge, IconHome2 } from '@tabler/icons';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -30,18 +32,20 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       navbar={
-        <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
-          <Text>
-            Application navbar
-          </Text>
-          {/* <Button style={{marginTop: '5px'}}>Test1</Button>
-          <Button style={{marginTop: '5px'}}>Test2</Button>
-          <Button style={{marginTop: '5px'}}>Test3</Button> */}
+        <Navbar p="sm" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
+          <NavLink label="Home" icon={<IconHome2 size={16} stroke={1.5} />} />
+          <NavLink
+            label="Board"
+            icon={<IconGauge size={16} stroke={1.5} />}
+            rightSection={<IconChevronRight size={12} stroke={1.5} />}
+          />
+          <NavLink label="About" icon={<IconApple size={16} stroke={1.5} />} />
+          <NavLink label="Disabled" icon={<IconCircleOff size={16} stroke={1.5} />} disabled />
         </Navbar>
       }
       footer={
         <Footer height={60} p="md">
-          Application footer
+          footer
         </Footer>
       }
       header={
@@ -56,7 +60,7 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
             />
           </MediaQuery>
           <Text>
-              Application header
+              Test...
           </Text>
           <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             <Button variant="outline" color="gray" radius="xl">
