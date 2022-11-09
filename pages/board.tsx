@@ -1,74 +1,78 @@
-import { Flex } from "@mantine/core"
+import { Button, Flex } from "@mantine/core"
 import axios from "axios"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
+
 interface Board {
-	id : string
-	title : string
-	content : string
-	writer : string
-	createdDate : string
-	replyList? : {}
+  id : string
+  title : string
+  content : string
+  writer : string
+  createdDate : string
+  replyList? : {}
 }
 
 export default function Board() {
 	const [items, setItems] = useState<Board[]>([]);
 
-	// async function fetchBoard() {
-	// 	const response = await axios.get(`http://localhost:8080/board/list`);
-	// 	setItems(response.data);
-	// 	setItems2(response.data);
-	// 	console.log(response.data);
-	// 	console.log("items ", items);
-	// 	console.log("items2 ", items2);
-	// }
-
 	useEffect(() => {
 		let isCompleted = false;
 
 		async function fetchBoard() {
-			axios.get(`http://localhost:8080/board/list`)
-			.then(response => {
-				console.log(response.data);
-				// console.log(response);
-				setItems(response.data);
-			})
-			.then(() => {console.log("useState items data is ", items)})
+			const result = await axios.get(`http://localhost:8080/board/list`)
+        .then(response => {
+          console.log("data is ", response.data);
+          console.log("responseData is ", response.data.responseData);
+          console.log("error is ", response.data.error);
+          setItems(response.data.responseData);
+        });
 
-			if (isCompleted == false) {
+			if (!isCompleted) {
+				// setItems(result);
 			}
 		}
 
 		fetchBoard();
 
 		return() => {
-			console.log("what the return..?");
+      isCompleted = true;
+			console.log("isCompleted true!");
 		};
 			
 	}, []);
 
 	return (
-		<Flex>
-			<h2>
+    <Flex
+      mih={50}
+      //bg="rgba(0, 0, 0, .3)"
+      gap="md"
+      justify="flex-start"
+      align="flex-start"
+      direction="column"
+      // mt="-25px"
+      // wrap="wrap"
+    >
+      <h3>
 				board.
-			</h2>
-			<div>
-				{/* {items.map((item, id) => (
-					<div key={id}>
-						<p>
-							title : {item.title}, writer : {item.writer}
-						</p>
-					</div>
-				))} */}
-			</div>
-			<div>
-				<Link href="/CreatePost">Create Post</Link>
-			</div>
-		</Flex>
+			</h3>
+      <div>
+        {items.map((item) => (
+          <div key={item.id}>
+            <p>
+              title : {item.title}, writer : {item.writer}
+            </p>
+          </div>
+        ))}
+      </div>
+      <Button 
+        component={Link}
+        href="/CreatePost"
+        color="gray"
+      >
+        Create Post
+      </Button>
+    </Flex>
 	);
 }
 
-function useAsync<T>(arg0: never[]): [any, any] {
-	throw new Error("Function not implemented.")
-}

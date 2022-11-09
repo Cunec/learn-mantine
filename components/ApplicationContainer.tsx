@@ -14,6 +14,8 @@ import {
 } from '@mantine/core';
 import { ColorSchemeToggle } from './ColorSchemeToggle';
 import { IconApple, IconChevronRight, IconCircleOff, IconGauge, IconHome2 } from '@tabler/icons';
+import board from '../pages/board'
+import Link from 'next/link';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -33,13 +35,23 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
       asideOffsetBreakpoint="sm"
       navbar={
         <Navbar p="sm" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
-          <NavLink label="Home" icon={<IconHome2 size={16} stroke={1.5} />} />
+          <NavLink 
+            component={Link}
+            href="/"
+            label="Home"
+            icon={<IconHome2 size={16} stroke={1.5} />} />
           <NavLink
+            component={Link}
+            href="/board"
             label="Board"
             icon={<IconGauge size={16} stroke={1.5} />}
             rightSection={<IconChevronRight size={12} stroke={1.5} />}
           />
-          <NavLink label="About" icon={<IconApple size={16} stroke={1.5} />} />
+          <NavLink 
+            component={Link}
+            href="/about"
+            label="About"
+            icon={<IconApple size={16} stroke={1.5} />} />
           <NavLink label="Disabled" icon={<IconCircleOff size={16} stroke={1.5} />} disabled />
         </Navbar>
       }
@@ -74,9 +86,9 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
         </Header>
       }
     >
-      <Text>
+      <div>
         {children}
-      </Text>
+      </div>
     </AppShell>
   );
 }

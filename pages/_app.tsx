@@ -1,33 +1,3 @@
-// import { AppProps } from 'next/app';
-// import Head from 'next/head';
-// import { MantineProvider } from '@mantine/core';
-// import ApplicationContainer from '../components/ApplicationContainer';
-
-// export default function App(props: AppProps) {
-//   const { Component, pageProps } = props;
-
-//   return (
-//     <>
-//       <Head>
-//         <title>Page title</title>
-//         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-//       </Head>
-//       <MantineProvider
-//         withGlobalStyles
-//         withNormalizeCSS
-//         theme={{
-//           /** Put your mantine theme override here */
-//           colorScheme: 'dark',
-//         }}
-//       >
-//         <ApplicationContainer>
-//           <Component {...pageProps} />
-//         </ApplicationContainer>
-//       </MantineProvider>
-//     </>
-//   );
-// }
-
 import { useState } from 'react';
 import NextApp, { AppProps, AppContext } from 'next/app';
 import { getCookie, setCookie } from 'cookies-next';
@@ -43,7 +13,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const toggleColorScheme = (value?: ColorScheme) => {
     const nextColorScheme = value || (colorScheme === 'dark' ? 'light' : 'dark');
     setColorScheme(nextColorScheme);
-    setCookie('mantine-color-scheme', nextColorScheme, { maxAge: 60 * 60 * 24 * 30 });
+    setCookie('mantine-color-scheme', nextColorScheme, { maxAge: 60 * 60 * 24 * 30 }); /// mantine theme color 쿠키에 저장.
   };
 
   return (
