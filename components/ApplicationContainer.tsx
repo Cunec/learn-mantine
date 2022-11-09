@@ -10,8 +10,13 @@ import {
   Burger,
   useMantineTheme,
   Button,
+  NavLink,
+  Modal,
 } from '@mantine/core';
 import { ColorSchemeToggle } from './ColorSchemeToggle';
+import { IconApple, IconChevronRight, IconCircleOff, IconGauge, IconHome2 } from '@tabler/icons';
+import Link from 'next/link';
+import { AuthenticationForm } from './AuthenticationForm/AuthenticationForm';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -20,7 +25,16 @@ type LayoutProps = {
 export const ApplicationContainer = ({children}: LayoutProps) => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+  const [loginModalOpened, setLoginModalOpened] = useState(false);
   return (
+    <>
+    <Modal
+      opened={loginModalOpened}
+      onClose={() => setLoginModalOpened(false)}
+    >
+      <AuthenticationForm useLoginFormType={false} noShadow />
+    </Modal>
+
     <AppShell
       styles={{
         main: {
@@ -30,18 +44,30 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       navbar={
-        <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
-          <Text>
-            Application navbar
-          </Text>
-          {/* <Button style={{marginTop: '5px'}}>Test1</Button>
-          <Button style={{marginTop: '5px'}}>Test2</Button>
-          <Button style={{marginTop: '5px'}}>Test3</Button> */}
+        <Navbar p="sm" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
+          <NavLink 
+            component={Link}
+            href="/"
+            label="Home"
+            icon={<IconHome2 size={16} stroke={1.5} />} />
+          <NavLink
+            component={Link}
+            href="/board"
+            label="Board"
+            icon={<IconGauge size={16} stroke={1.5} />}
+            rightSection={<IconChevronRight size={12} stroke={1.5} />}
+          />
+          <NavLink 
+            component={Link}
+            href="/about"
+            label="About"
+            icon={<IconApple size={16} stroke={1.5} />} />
+          <NavLink label="Disabled" icon={<IconCircleOff size={16} stroke={1.5} />} disabled />
         </Navbar>
       }
       footer={
         <Footer height={60} p="md">
-          Application footer
+          footer
         </Footer>
       }
       header={
@@ -56,13 +82,24 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
             />
           </MediaQuery>
           <Text>
-              Application header
+              Test...
           </Text>
           <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <Button variant="outline" color="gray" radius="xl">
+            <Button
+              //component={Link}
+              //href="/auth/register"
+              onClick={() => setLoginModalOpened(true)}
+              variant="outline"
+              color="gray"
+              radius="xl">
               Sign Up
             </Button>
-            <Button color="gray" radius="xl">
+            <Button
+              //component={Link}
+              //href="/auth/login"
+              onClick={() => setLoginModalOpened(true)}
+              color="gray"
+              radius="xl">
               Log In
             </Button>
             <ColorSchemeToggle />
@@ -70,10 +107,11 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
         </Header>
       }
     >
-      <Text>
+      <div>
         {children}
-      </Text>
+      </div>
     </AppShell>
+    </>
   );
 }
 
