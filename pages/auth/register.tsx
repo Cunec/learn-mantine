@@ -8,17 +8,17 @@ export default function Register() {
   
   return (
     <>
-      <Modal
+      {/* <Modal
         opened={opened}
         onClose={() => setOpened(false)}
         title="Introduce yourself!"
       >
-        <AuthenticationForm />
+        <AuthenticationForm authenticationFormType={false} />
       </Modal>
 
       <Group position="center">
         <Button onClick={() => setOpened(true)}>Open Modal</Button>
-      </Group>
+      </Group> */}
     </>
   );
 }

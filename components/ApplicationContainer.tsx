@@ -25,14 +25,16 @@ type LayoutProps = {
 export const ApplicationContainer = ({children}: LayoutProps) => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
-  const [loginModalOpened, setLoginModalOpened] = useState(false);
+  const [authenticationModalOpened, setAuthenticationModalOpened] = useState(false);
+  const [authenticationFormType, setAuthenticationFormType] = useState<'register' | 'login'>('register');
+
   return (
     <>
     <Modal
-      opened={loginModalOpened}
-      onClose={() => setLoginModalOpened(false)}
+      opened={authenticationModalOpened}
+      onClose={() => setAuthenticationModalOpened(false)}
     >
-      <AuthenticationForm useLoginFormType={false} noShadow />
+      <AuthenticationForm formtype={authenticationFormType} />
     </Modal>
 
     <AppShell
@@ -93,7 +95,7 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
             <Button
               //component={Link}
               //href="/auth/register"
-              onClick={() => setLoginModalOpened(true)}
+              onClick={() => {setAuthenticationFormType('register'); setAuthenticationModalOpened(true);}}
               variant="outline"
               color="gray"
               radius="xl">
@@ -102,7 +104,7 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
             <Button
               //component={Link}
               //href="/auth/login"
-              onClick={() => setLoginModalOpened(true)}
+              onClick={() => {setAuthenticationFormType('login'); setAuthenticationModalOpened(true);}}
               color="gray"
               radius="xl">
               Log In

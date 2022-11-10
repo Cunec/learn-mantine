@@ -14,21 +14,24 @@ import {
   Stack,
 } from '@mantine/core';
 import { GoogleButton, TwitterButton } from '../SocialButtons/SocialButtons';
+import { useState } from 'react';
+import { WhatCanIUseThis } from '../../pages/api/My';
 
 export interface AuthenticationFormProps {
   noShadow?: boolean;
   //noPadding?: boolean;
   //noSubmit?: boolean;
   //style?: React.CSSProperties;
-  useLoginFormType: boolean
+  formtype: string;
 }
 
 export function AuthenticationForm(props: AuthenticationFormProps) {
-  const [type, toggle] = useToggle(['login', 'register']);
+  // const [type, toggle] = useToggle(['login', 'register']);
+  const [formType, setFormType] = useState<'register' | 'login'>(props.formtype === 'login' ? 'login' : 'register');
   const form = useForm({
     initialValues: {
       email: '',
-      name: '',
+      nickName: '',
       password: '',
       terms: true,
     },
@@ -39,19 +42,28 @@ export function AuthenticationForm(props: AuthenticationFormProps) {
     },
   });
 
-  if (props.useLoginFormType) {
-    //toggle(type.toString());
-  } else {
-    //toggle(type.toString());
-  }
+  // console.log(formType, " formType is..")
 
-  console.log(type);
-  console.log(type.toString());
+  const toggleFormType = () => {
+    setFormType((current) => (current === 'register' ? 'login' : 'register'));
+  };
+
+  // const handleSubmit = form.onSubmit(
+  //   //Signin(`/auth/signin`, { "email" : form.values.email, "password" : form.values.password });
+
+  //   // if (form.isValid()) {
+  //   //   Signin(`/auth/signin`, { "email" : form.values.email, "password" : form.values.password });
+  //   // }
+  // );
+
+  function What(val : string) {
+    console.log(val);
+  }
 
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
       <Text size="lg" weight={500}>
-        Welcome to Mantine, {type} with
+        Welcome to Mantine, {formType} with
       </Text>
 
       <Group grow mb="md" mt="md">
@@ -61,14 +73,15 @@ export function AuthenticationForm(props: AuthenticationFormProps) {
 
       <Divider label="Or continue with email" labelPosition="center" my="lg" />
 
-      <form onSubmit={form.onSubmit(() => {})}>
+      <form onSubmit={form.onSubmit((values) => 
+        {What(values.email);})}>
         <Stack>
-          {type === 'register' && (
+          {formType === 'register' && (
             <TextInput
-              label="Name"
-              placeholder="Your name"
-              value={form.values.name}
-              onChange={(event) => form.setFieldValue('name', event.currentTarget.value)}
+              label="Nick name"
+              placeholder="Your nick name"
+              value={form.values.nickName}
+              onChange={(event) => form.setFieldValue('nickName', event.currentTarget.value)}
             />
           )}
 
@@ -90,7 +103,7 @@ export function AuthenticationForm(props: AuthenticationFormProps) {
             error={form.errors.password && 'Password should include at least 6 characters'}
           />
 
-          {type === 'register' && (
+          {formType === 'register' && (
             <Checkbox
               label="I accept terms and conditions"
               checked={form.values.terms}
@@ -104,14 +117,14 @@ export function AuthenticationForm(props: AuthenticationFormProps) {
             component="button"
             type="button"
             color="dimmed"
-            onClick={() => toggle()}
+            onClick={toggleFormType}
             size="xs"
           >
-            {type === 'register'
+            {formType === 'register'
               ? 'Already have an account? Login'
               : "Don't have an account? Register"}
           </Anchor>
-          <Button type="submit">{upperFirst(type)}</Button>
+          <Button type="submit">{upperFirst(formType)}</Button>
         </Group>
       </form>
     </Paper>
