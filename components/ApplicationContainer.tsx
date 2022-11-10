@@ -17,10 +17,28 @@ import { ColorSchemeToggle } from './ColorSchemeToggle';
 import { IconApple, IconChevronRight, IconCircleOff, IconGauge, IconHome2 } from '@tabler/icons';
 import Link from 'next/link';
 import { AuthenticationForm } from './AuthenticationForm/AuthenticationForm';
+import axios from 'axios';
 
 type LayoutProps = {
   children: React.ReactNode;
 };
+
+export async function ThatIsCalled() {
+  await axios.post(`http://localhost:8080/auth/signin`, {
+    "username" : "abc", /// username backend에서 제거 할 것.
+    "email" : "a@a.com",
+    "password" : "1234567" 
+  })
+  .then((response) => {
+    if (response.data.token) {
+      console.log(response.data.token);
+      // 로컬 스토리지에 토큰 저장
+      localStorage.setItem(`ACCESS_TOKEN`, response.data.token);
+      // token이 존재하는 경우 Todo 화면으로 리디렉트
+      window.location.href = "/";
+    }
+  })
+}
 
 export const ApplicationContainer = ({children}: LayoutProps) => {
   const theme = useMantineTheme();
@@ -28,6 +46,7 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
   const [authenticationModalOpened, setAuthenticationModalOpened] = useState(false);
   const [authenticationFormType, setAuthenticationFormType] = useState<'register' | 'login'>('register');
 
+  
   return (
     <>
     <Modal

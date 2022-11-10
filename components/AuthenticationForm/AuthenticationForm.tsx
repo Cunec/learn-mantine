@@ -1,4 +1,4 @@
-import { useToggle, upperFirst } from '@mantine/hooks';
+import { upperFirst } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import {
   TextInput,
@@ -15,7 +15,7 @@ import {
 } from '@mantine/core';
 import { GoogleButton, TwitterButton } from '../SocialButtons/SocialButtons';
 import { useState } from 'react';
-import { WhatCanIUseThis } from '../../pages/api/My';
+import { Signin } from '../../pages/api/AuthenticationService';
 
 export interface AuthenticationFormProps {
   noShadow?: boolean;
@@ -42,22 +42,35 @@ export function AuthenticationForm(props: AuthenticationFormProps) {
     },
   });
 
-  // console.log(formType, " formType is..")
-
   const toggleFormType = () => {
     setFormType((current) => (current === 'register' ? 'login' : 'register'));
   };
 
-  // const handleSubmit = form.onSubmit(
-  //   //Signin(`/auth/signin`, { "email" : form.values.email, "password" : form.values.password });
+  // async function ButNotCalled() {
+  //   await axios.post(`http://localhost:8080/auth/signin`, {
+  //     "username" : "abc", /// username backend에서 제거 할 것.
+  //     "email" : "a@a.com",
+  //     "password" : "1234567" 
+  //   })
+  //   .then((response) => {
+  //     if (response.data.token) {
+  //       console.log(response.data.token);
+  //       // 로컬 스토리지에 토큰 저장
+  //       localStorage.setItem(`ACCESS_TOKEN`, response.data.token);
+  //       // token이 존재하는 경우 Todo 화면으로 리디렉트
+  //       window.location.href = "/";
+  //     }
+  //   })
+  // }
 
-  //   // if (form.isValid()) {
-  //   //   Signin(`/auth/signin`, { "email" : form.values.email, "password" : form.values.password });
-  //   // }
-  // );
+  function handleSubmit() {
+    console.log(form.values.email);
 
-  function What(val : string) {
-    console.log(val);
+    Signin(`/auth/signin`, { 
+          "username" : "abc", /// username backend에서 제거 할 것.
+          "email" : form.values.email,
+          "password" : form.values.password 
+    });
   }
 
   return (
@@ -73,8 +86,7 @@ export function AuthenticationForm(props: AuthenticationFormProps) {
 
       <Divider label="Or continue with email" labelPosition="center" my="lg" />
 
-      <form onSubmit={form.onSubmit((values) => 
-        {What(values.email);})}>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           {formType === 'register' && (
             <TextInput

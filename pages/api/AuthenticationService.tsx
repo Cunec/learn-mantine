@@ -23,11 +23,3 @@ export function Logout() {
 
   window.location.href = "/";
 }
-
-export function Test() {
-  console.log("hello?");
-}
-
-export const Test2 = () => {
-  console.log("Test2..");
-}
