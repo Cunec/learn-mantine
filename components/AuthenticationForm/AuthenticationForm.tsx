@@ -46,23 +46,6 @@ export function AuthenticationForm(props: AuthenticationFormProps) {
     setFormType((current) => (current === 'register' ? 'login' : 'register'));
   };
 
-  // async function ButNotCalled() {
-  //   await axios.post(`http://localhost:8080/auth/signin`, {
-  //     "username" : "abc", /// username backend에서 제거 할 것.
-  //     "email" : "a@a.com",
-  //     "password" : "1234567" 
-  //   })
-  //   .then((response) => {
-  //     if (response.data.token) {
-  //       console.log(response.data.token);
-  //       // 로컬 스토리지에 토큰 저장
-  //       localStorage.setItem(`ACCESS_TOKEN`, response.data.token);
-  //       // token이 존재하는 경우 Todo 화면으로 리디렉트
-  //       window.location.href = "/";
-  //     }
-  //   })
-  // }
-
   function handleSubmit() {
     console.log(form.values.email);
 
