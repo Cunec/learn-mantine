@@ -15,7 +15,7 @@ import {
 } from '@mantine/core';
 import { GoogleButton, TwitterButton } from '../SocialButtons/SocialButtons';
 import { useState } from 'react';
-import { Signin } from '../../pages/api/AuthenticationService';
+import { Signin, Signup } from '../../pages/api/AuthenticationService';
 
 export interface AuthenticationFormProps {
   noShadow?: boolean;
@@ -47,13 +47,20 @@ export function AuthenticationForm(props: AuthenticationFormProps) {
   };
 
   function handleSubmit() {
-    console.log(form.values.email);
+    console.log("handleSubmit formType", formType, " email ", form.values.email);
 
-    Signin(`/auth/signin`, { 
-          "username" : "abc", /// username backend에서 제거 할 것.
-          "email" : form.values.email,
-          "password" : form.values.password 
-    });
+    if (formType === "register") {
+      Signup(`/auth/signup`, {
+        "username" : form.values.nickName,
+        "email" : form.values.email,
+        "password" : form.values.password 
+      })
+    } else {
+      Signin(`/auth/signin`, { 
+        "email" : form.values.email,
+        "password" : form.values.password 
+      });
+    }
   }
 
   return (

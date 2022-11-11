@@ -17,6 +17,18 @@ export function Signin(api : string, request : {}) {
     })
 }
 
+export function Signup(api : string, request : {}) {
+  axios.post(`${LOCAL_HOST}${api}`, request)
+    .then((response) => {
+      if (response.data.email) {
+        console.log(response.data.email);
+        
+        window.location.href = "/";
+      }
+    })
+}
+
+
 export function Logout() {
 
   localStorage.removeItem(ACCESS_TOKEN);
