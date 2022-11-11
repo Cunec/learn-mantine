@@ -15,7 +15,7 @@ import {
 } from '@mantine/core';
 import { GoogleButton, TwitterButton } from '../SocialButtons/SocialButtons';
 import { useState } from 'react';
-import { Signin, Signup } from '../../pages/api/AuthenticationService';
+import { Signin, Signup, Test } from '../../pages/api/AuthenticationService';
 
 export interface AuthenticationFormProps {
   noShadow?: boolean;
@@ -23,6 +23,7 @@ export interface AuthenticationFormProps {
   //noSubmit?: boolean;
   //style?: React.CSSProperties;
   formtype: string;
+  loginCallback: (value : boolean) => void;
 }
 
 export function AuthenticationForm(props: AuthenticationFormProps) {
@@ -46,20 +47,26 @@ export function AuthenticationForm(props: AuthenticationFormProps) {
     setFormType((current) => (current === 'register' ? 'login' : 'register'));
   };
 
-  function handleSubmit() {
-    console.log("handleSubmit formType", formType, " email ", form.values.email);
+  async function handleSubmit() {
+    console.log("handleSubmit.. formType:", formType, ", email:", form.values.email);
 
     if (formType === "register") {
-      Signup(`/auth/signup`, {
+      const signup = Signup(`/auth/signup`, {
         "username" : form.values.nickName,
         "email" : form.values.email,
         "password" : form.values.password 
       })
+      console.log("signup ", signup);
     } else {
-      Signin(`/auth/signin`, { 
+      const signin = await Signin(`/auth/signin`, { 
         "email" : form.values.email,
         "password" : form.values.password 
       });
+      console.log("signin ", signin)
+
+      if (signin !== "Fail") {
+        props.loginCallback(true);
+      }
     }
   }
 

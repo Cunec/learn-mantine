@@ -12,6 +12,11 @@ export default function ApplicationHeader({ burgerOpenedCallback } : IProps) {
   const [burgerOpened, setBurgerOpened] = useState(false);
   const [authenticationModalOpened, setAuthenticationModalOpened] = useState(false);
   const [authenticationFormType, setAuthenticationFormType] = useState<'register' | 'login'>('register');
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const loginCallback = () => {
+    console.log("login call back!");
+  }
 
   return (
     <>
@@ -19,7 +24,7 @@ export default function ApplicationHeader({ burgerOpenedCallback } : IProps) {
         opened={authenticationModalOpened}
         onClose={() => setAuthenticationModalOpened(false)}
       >
-        <AuthenticationForm formtype={authenticationFormType} />
+        <AuthenticationForm formtype={authenticationFormType} loginCallback={loginCallback} />
       </Modal>
 
       <Header height={{ base: 50, md: 50 }} p="md" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
@@ -36,6 +41,11 @@ export default function ApplicationHeader({ burgerOpenedCallback } : IProps) {
             Test...
         </Text>
         <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+          {loggedIn === true && (
+            <Text>
+            aaa
+            </Text>
+          )}
           <Button
             //component={Link}
             //href="/auth/register"
