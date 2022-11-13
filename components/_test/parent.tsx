@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Text } from "@mantine/core";
 import Child from "./child";
 

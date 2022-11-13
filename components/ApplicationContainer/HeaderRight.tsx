@@ -20,7 +20,7 @@ const HeaderRight: React.FC<AuthenticationModal> = ({ modalOpen, typeName }) => 
       opened={modalOpened}
       onClose={() => setModalOpened(false)}
     >
-      <AuthenticationForm formtype={formType} />
+      {/* <AuthenticationForm formtype={formType} /> */}
     </Modal>
     );
 };

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Burger, Button, Header, MediaQuery, Modal, Text, useMantineTheme } from "@mantine/core";
 import { ColorSchemeToggle } from "../ColorSchemeToggle";
 import { AuthenticationForm } from "../AuthenticationForm/AuthenticationForm";
+import { Logout } from "../../pages/api/AuthenticationService";
 
 interface IProps {
   burgerOpenedCallback: (value : boolean) => void
@@ -13,9 +14,25 @@ export default function ApplicationHeader({ burgerOpenedCallback } : IProps) {
   const [authenticationModalOpened, setAuthenticationModalOpened] = useState(false);
   const [authenticationFormType, setAuthenticationFormType] = useState<'register' | 'login'>('register');
   const [loggedIn, setLoggedIn] = useState(false);
+  const [userId, setUserId] = useState("");
 
-  const loginCallback = () => {
-    console.log("login call back!");
+  useEffect(() => {
+    console.log(localStorage.getItem(`ACCESS_TOKEN`));
+  })
+
+  const loginCallback = (loggedIn : boolean, userId : string) => {
+    /// 로그인 라벨 띄우기.
+    setLoggedIn(loggedIn);
+    /// 유저 아이디 세팅.
+    setUserId(userId);
+    /// 모달 닫기.
+    setAuthenticationModalOpened(false);
+  }
+
+  const logout = () => {
+    setLoggedIn(false);
+    setUserId("");
+    Logout();
   }
 
   return (
@@ -42,27 +59,39 @@ export default function ApplicationHeader({ burgerOpenedCallback } : IProps) {
         </Text>
         <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
           {loggedIn === true && (
-            <Text>
-            aaa
-            </Text>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Text>
+                {userId}
+              </Text>
+              <Button
+                onClick={() => {logout()}}
+                color="gray"
+                radius="xl">
+                Logout
+              </Button>
+            </div>
           )}
-          <Button
-            //component={Link}
-            //href="/auth/register"
-            onClick={() => {setAuthenticationFormType('register'); setAuthenticationModalOpened(true);}}
-            variant="outline"
-            color="gray"
-            radius="xl">
-            Sign Up
-          </Button>
-          <Button
-            //component={Link}
-            //href="/auth/login"
-            onClick={() => {setAuthenticationFormType('login'); setAuthenticationModalOpened(true);}}
-            color="gray"
-            radius="xl">
-            Log In
-          </Button>
+          {loggedIn === false && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <Button
+                //component={Link}
+                //href="/auth/register"
+                onClick={() => {setAuthenticationFormType('register'); setAuthenticationModalOpened(true);}}
+                variant="outline"
+                color="gray"
+                radius="xl">
+                Sign Up
+              </Button>
+              <Button
+                //component={Link}
+                //href="/auth/login"
+                onClick={() => {setAuthenticationFormType('login'); setAuthenticationModalOpened(true);}}
+                color="gray"
+                radius="xl">
+                Log In
+              </Button>
+            </div>
+          )}
         <ColorSchemeToggle />
       </div>
     </Header>
