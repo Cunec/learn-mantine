@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Burger, Button, Header, MediaQuery, Modal, Text, useMantineTheme } from "@mantine/core";
 import { ColorSchemeToggle } from "../ColorSchemeToggle";
 import { AuthenticationForm } from "../AuthenticationForm/AuthenticationForm";
-import { Logout } from "../../pages/api/AuthenticationService";
+import { CheckToken, Logout } from "../../pages/api/AuthenticationService";
 
 interface IProps {
   burgerOpenedCallback: (value : boolean) => void
@@ -17,7 +17,16 @@ export default function ApplicationHeader({ burgerOpenedCallback } : IProps) {
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    console.log(localStorage.getItem(`ACCESS_TOKEN`));
+    async function checkUser() {
+      const data = await CheckToken();
+
+      if (data !== "null") {
+        setLoggedIn(true);
+        setUserId(data);
+      }
+    }
+    
+    checkUser();
   })
 
   const loginCallback = (loggedIn : boolean, userId : string) => {
@@ -25,7 +34,7 @@ export default function ApplicationHeader({ burgerOpenedCallback } : IProps) {
     setLoggedIn(loggedIn);
     /// 유저 아이디 세팅.
     setUserId(userId);
-    /// 모달 닫기.
+    /// 로그인 모달 닫기.
     setAuthenticationModalOpened(false);
   }
 
