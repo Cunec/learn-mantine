@@ -44,11 +44,27 @@ export function Logout() {
   //window.location.href = "/";
 }
 
-export async function Test(api : string, request : {}) {
-  const response = axios.post(`${LOCAL_HOST}${api}`, request);
-  return (await response).data;
-  // return axios.post(`${LOCAL_HOST}${api}`, request).then(response => response.data);
+export async function CheckToken() {
+  const accessToken = localStorage.getItem(ACCESS_TOKEN);
+
+  if (accessToken && accessToken !== null) {
+    const response = axios.post(`${LOCAL_HOST}/auth/detail`, {}, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+
+    return (await response).data;
+  } else {
+    return "null";
+  }
 }
+
+// export async function Test(api : string, request : {}) {
+//   const response = axios.post(`${LOCAL_HOST}${api}`, request);
+//   return (await response).data;
+//   // return axios.post(`${LOCAL_HOST}${api}`, request).then(response => response.data);
+// }
 
 // export const Test = async (api : string, request : {}) => {
 //   try {
