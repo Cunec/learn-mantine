@@ -12,9 +12,9 @@ export default function Parent() {
   return (
     <div>
       <Text>
-        {parentValue}
+        parentValue : {parentValue}
       </Text>
-      <Child callback={handleCallback} />
+      <Child parentCallback={handleCallback} />
     </div>
   );
 }

@@ -15,6 +15,7 @@ export default function ApplicationNavbar({ opened } : IProps) {
   })
   
   return (
+    <>
     <Navbar p="sm" hiddenBreakpoint="sm" hidden={!navbarOpened} width={{ sm: 200, lg: 300 }}>
       <NavLink 
         component={Link}
@@ -27,18 +28,19 @@ export default function ApplicationNavbar({ opened } : IProps) {
         label="Board"
         icon={<IconGauge size={16} stroke={1.5} />}
         rightSection={<IconChevronRight size={12} stroke={1.5} />}
-      />
+        />
       <NavLink 
         component={Link}
         href="/about"
         label="About"
-        icon={<IconApple size={16} stroke={1.5} />} />
+        icon={<IconApple size={16} stroke={1.5} />} disabled />
       <NavLink 
         component={Link}
         href="/test"
-        label="TestPage"
+        label="Test"
         icon={<IconApple size={16} stroke={1.5} />} />
       <NavLink label="Disabled" icon={<IconCircleOff size={16} stroke={1.5} />} disabled />
     </Navbar>
+    </>
   )
 }

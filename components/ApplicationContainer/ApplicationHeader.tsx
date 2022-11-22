@@ -29,7 +29,7 @@ export default function ApplicationHeader({ burgerOpenedCallback } : IProps) {
     checkUser();
   })
 
-  const loginCallback = (loggedIn : boolean, userId : string) => {
+  const c = (loggedIn : boolean, userId : string) => {
     /// 로그인 라벨 띄우기.
     setLoggedIn(loggedIn);
     /// 유저 아이디 세팅.
@@ -50,7 +50,9 @@ export default function ApplicationHeader({ burgerOpenedCallback } : IProps) {
         opened={authenticationModalOpened}
         onClose={() => setAuthenticationModalOpened(false)}
       >
-        <AuthenticationForm formtype={authenticationFormType} loginCallback={loginCallback} />
+        <AuthenticationForm 
+          formtype={authenticationFormType} logincallback={c} 
+        />
       </Modal>
 
       <Header height={{ base: 50, md: 50 }} p="md" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
@@ -80,6 +82,7 @@ export default function ApplicationHeader({ burgerOpenedCallback } : IProps) {
               </Button>
             </div>
           )}
+          <>
           {loggedIn === false && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
               <Button
@@ -101,6 +104,7 @@ export default function ApplicationHeader({ burgerOpenedCallback } : IProps) {
               </Button>
             </div>
           )}
+          </>
         <ColorSchemeToggle />
       </div>
     </Header>

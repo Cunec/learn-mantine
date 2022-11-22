@@ -54,7 +54,7 @@ export default function Board() {
       // wrap="wrap"
     >
       <h3>
-				board.
+				Board
 			</h3>
       <div>
         {items.map((item) => (

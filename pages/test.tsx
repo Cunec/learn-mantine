@@ -4,7 +4,7 @@ export default function Test() {
   return (
     <div>
       <div>
-        TestPage
+        Test
       </div>
       <Parent></Parent>
     </div>

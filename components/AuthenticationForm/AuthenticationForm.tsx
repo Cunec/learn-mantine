@@ -16,6 +16,7 @@ import {
 import { GoogleButton, TwitterButton } from '../SocialButtons/SocialButtons';
 import { useState } from 'react';
 import { Signin, Signup } from '../../pages/api/AuthenticationService';
+import { useRouter } from 'next/router';
 
 export interface AuthenticationFormProps {
   noShadow?: boolean;
@@ -23,12 +24,13 @@ export interface AuthenticationFormProps {
   //noSubmit?: boolean;
   //style?: React.CSSProperties;
   formtype: string;
-  loginCallback: (loggedIn : boolean, userId : string) => void;
+  logincallback: (loggedIn : boolean, userId : string) => void;
 }
 
 export function AuthenticationForm(props: AuthenticationFormProps) {
   // const [type, toggle] = useToggle(['login', 'register']);
   const [formType, setFormType] = useState<'register' | 'login'>(props.formtype === 'login' ? 'login' : 'register');
+  const router = useRouter();
   const form = useForm({
     initialValues: {
       email: '',
@@ -54,98 +56,118 @@ export function AuthenticationForm(props: AuthenticationFormProps) {
       const signin = await Signin(`/auth/signin`, { 
         "email" : form.values.email,
         "password" : form.values.password 
-      });
-      console.log("signin ", signin);
+      })
+      // .then((response) => {
+      //   console.log(`signin ${response}`);
+
+      // })
+      // .catch((error) => {
+      //   console.log(error);
+      // })
 
       if (signin !== "Fail") {
-        props.loginCallback(true, signin);
+        props.logincallback(true, signin);
       }
+
     } else {
-      const signup = await Signup(`/auth/signup`, {
+      await Signup(`/auth/signup`, {
         "username" : form.values.nickName,
         "email" : form.values.email,
         "password" : form.values.password 
       })
-      console.log("signup ", signup);
+      .then((response) => {
+        console.log(`Your signup is completed. Welcome ${response}`);
+
+        router.push(`/`);
+      })
+      .catch((error) => {
+        console.log(error);
+
+        if (error.response.status === 400) {
+          console.log(`HTTP 400 error occured`);
+        }
+      })
       
-      if (signup !== "") {
-        /// 
-      }
+      // if (signup !== "") {
+      //   /// 
+      //   console.log("Your signup is completed. ");
+      // }
     }
   }
 
   return (
     <>
-      <Paper radius="md" p="xl" withBorder {...props}>
-        <Text size="lg" weight={500}>
-          Welcome to Mantine, {formType} with
-        </Text>
+    <Paper radius="md" p="xl" withBorder {...props}>
+      <Text size="lg" weight={500}>
+        Welcome to Mantine, {formType} with
+      </Text>
 
-        <Group grow mb="md" mt="md">
-          <GoogleButton radius="xl">Google</GoogleButton>
-          <TwitterButton radius="xl">Twitter</TwitterButton>
+      <Group grow mb="md" mt="md">
+        <GoogleButton radius="xl">Google</GoogleButton>
+        <TwitterButton radius="xl">Twitter</TwitterButton>
+      </Group>
+
+      <Divider label="Or continue with email" labelPosition="center" my="lg" />
+
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack>
+          <>
+            {formType === 'register' && (
+              <TextInput
+              label="Nick name"
+              placeholder="Your nick name"
+              value={form.values.nickName}
+              onChange={(event) => form.setFieldValue('nickName', event.currentTarget.value)}
+              />
+            )}
+          </>
+          <>
+          <TextInput
+            required
+            label="Email"
+            placeholder="hello@mantine.dev"
+            value={form.values.email}
+            onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
+            error={form.errors.email && 'Invalid email'}
+          />
+
+          <PasswordInput
+            required
+            label="Password"
+            placeholder="Your password"
+            value={form.values.password}
+            onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
+            error={form.errors.password && 'Password should include at least 6 characters'}
+          />
+          </>
+          <>
+            {formType === 'register' && (
+              <Checkbox
+              label="I accept terms and conditions"
+              checked={form.values.terms}
+              onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)}
+              />
+            )}
+          </>
+        </Stack>
+        <Group position="apart" mt="xl">
+          <Anchor
+            component="button"
+            type="button"
+            color="dimmed"
+            onClick={toggleFormType}
+            size="xs"
+          >
+          <>
+            {formType === 'register'
+              ? 'Already have an account? Login'
+              : "Don't have an account? Register"}
+          </>
+          </Anchor>
+          <Button type="submit">{upperFirst(formType)}</Button>
         </Group>
-
-        <Divider label="Or continue with email" labelPosition="center" my="lg" />
-
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack>
-            <>
-              {formType === 'register' && (
-                <TextInput
-                label="Nick name"
-                placeholder="Your nick name"
-                value={form.values.nickName}
-                onChange={(event) => form.setFieldValue('nickName', event.currentTarget.value)}
-                />
-              )}
-            </>
-
-            <TextInput
-              required
-              label="Email"
-              placeholder="hello@mantine.dev"
-              value={form.values.email}
-              onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
-              error={form.errors.email && 'Invalid email'}
-            />
-
-            <PasswordInput
-              required
-              label="Password"
-              placeholder="Your password"
-              value={form.values.password}
-              onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
-              error={form.errors.password && 'Password should include at least 6 characters'}
-            />
-            <>
-              {formType === 'register' && (
-                <Checkbox
-                label="I accept terms and conditions"
-                checked={form.values.terms}
-                onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)}
-                />
-              )}
-            </>
-          </Stack>
-          <Group position="apart" mt="xl">
-            <Anchor
-              component="button"
-              type="button"
-              color="dimmed"
-              onClick={toggleFormType}
-              size="xs"
-            >
-            <>
-              {formType === 'register'
-                ? 'Already have an account? Login'
-                : "Don't have an account? Register"}
-            </>
-            </Anchor>
-            <Button type="submit">{upperFirst(formType)}</Button>
-          </Group>
-        </form>
-      </Paper>
+      </form>
+    </Paper>
     </>
   );
 }
