@@ -3,16 +3,14 @@ import { Burger, Button, Header, MediaQuery, Modal, Text, useMantineTheme } from
 import { ColorSchemeToggle } from "../ColorSchemeToggle";
 import { AuthenticationForm } from "../AuthenticationForm/AuthenticationForm";
 import { CheckToken, Logout } from "../../pages/api/AuthenticationService";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { selectNavbar, setNavbar } from "../../features/ApplicationContainer/ApplicationNavbarSlice";
+import { selectAuthenticationForm, setAuthenticationForm } from "../../features/AuthenticationForm/AuthenticationFormSlice";
 
-interface IProps {
-  burgerOpenedCallback: (value : boolean) => void
-}
-
-export default function ApplicationHeader({ burgerOpenedCallback } : IProps) {
+export default function ApplicationHeader() {
   const theme = useMantineTheme();
-  const [burgerOpened, setBurgerOpened] = useState(false);
   const [authenticationModalOpened, setAuthenticationModalOpened] = useState(false);
-  const [authenticationFormType, setAuthenticationFormType] = useState<'register' | 'login'>('register');
+  // const [authenticationFormType, setAuthenticationFormType] = useState<'register' | 'login'>('register');
   const [loggedIn, setLoggedIn] = useState(false);
   const [userId, setUserId] = useState("");
 
@@ -29,14 +27,14 @@ export default function ApplicationHeader({ burgerOpenedCallback } : IProps) {
     checkUser();
   })
 
-  const c = (loggedIn : boolean, userId : string) => {
-    /// 로그인 라벨 띄우기.
-    setLoggedIn(loggedIn);
-    /// 유저 아이디 세팅.
-    setUserId(userId);
-    /// 로그인 모달 닫기.
-    setAuthenticationModalOpened(false);
-  }
+  // const logincallback = (loggedIn : boolean, userId : string) => {
+  //   /// 로그인 라벨 띄우기.
+  //   setLoggedIn(loggedIn);
+  //   /// 유저 아이디 세팅.
+  //   setUserId(userId);
+  //   /// 로그인 모달 닫기.
+  //   setAuthenticationModalOpened(false);
+  // }
 
   const logout = () => {
     setLoggedIn(false);
@@ -44,22 +42,26 @@ export default function ApplicationHeader({ burgerOpenedCallback } : IProps) {
     Logout();
   }
 
+  //
+  const dispatch = useAppDispatch()
+  const navbarOpened = useAppSelector(selectNavbar)
+
+  const authenticationForm = useAppSelector(selectAuthenticationForm)
+
   return (
     <>
       <Modal
         opened={authenticationModalOpened}
         onClose={() => setAuthenticationModalOpened(false)}
       >
-        <AuthenticationForm 
-          formtype={authenticationFormType} logincallback={c} 
-        />
+        <AuthenticationForm />
       </Modal>
 
       <Header height={{ base: 50, md: 50 }} p="md" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
         <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
           <Burger
-            opened={burgerOpened}
-            onClick={() => {setBurgerOpened((o) => !o); burgerOpenedCallback(!burgerOpened); }}
+            opened={navbarOpened}
+            onClick={() => {dispatch(setNavbar())}}
             size="sm"
             color={theme.colors.gray[6]}
             mr="xl"
@@ -88,7 +90,8 @@ export default function ApplicationHeader({ burgerOpenedCallback } : IProps) {
               <Button
                 //component={Link}
                 //href="/auth/register"
-                onClick={() => {setAuthenticationFormType('register'); setAuthenticationModalOpened(true);}}
+                // onClick={() => {setAuthenticationFormType('register'); setAuthenticationModalOpened(true);}}
+                onClick={() => {dispatch(setAuthenticationForm('register')); setAuthenticationModalOpened(true);}}
                 variant="outline"
                 color="gray"
                 radius="xl">
@@ -97,7 +100,7 @@ export default function ApplicationHeader({ burgerOpenedCallback } : IProps) {
               <Button
                 //component={Link}
                 //href="/auth/login"
-                onClick={() => {setAuthenticationFormType('login'); setAuthenticationModalOpened(true);}}
+                onClick={() => {dispatch(setAuthenticationForm('login')); setAuthenticationModalOpened(true);}}
                 color="gray"
                 radius="xl">
                 Log In

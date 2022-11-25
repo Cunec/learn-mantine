@@ -1,19 +1,12 @@
 import { Navbar, NavLink } from "@mantine/core";
 import { IconApple, IconChevronRight, IconCircleOff, IconGauge, IconHome2 } from "@tabler/icons";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { selectNavbar } from "../../features/ApplicationContainer/ApplicationNavbarSlice";
+import {  useAppSelector } from "../../hooks";
 
-interface IProps {
-  opened: boolean
-}
+export default function ApplicationNavbar() {
+  const navbarOpened = useAppSelector(selectNavbar)
 
-export default function ApplicationNavbar({ opened } : IProps) {
-  const [navbarOpened, setNavbarOpened] = useState(false);
- 
-  useEffect(() => {
-    setNavbarOpened(opened);
-  })
-  
   return (
     <>
     <Navbar p="sm" hiddenBreakpoint="sm" hidden={!navbarOpened} width={{ sm: 200, lg: 300 }}>

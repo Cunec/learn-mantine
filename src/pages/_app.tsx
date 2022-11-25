@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { Provider } from 'react-redux'
 import NextApp, { AppProps, AppContext } from 'next/app';
+import store from '../store'
 import { getCookie, setCookie } from 'cookies-next';
 import Head from 'next/head';
 import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
@@ -23,16 +25,17 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         <link rel="shortcut icon" href="/favicon.svg" />
       </Head>
-
-      <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-        <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
-          <NotificationsProvider>
-            <ApplicationContainer>
-             <Component {...pageProps} />
-            </ApplicationContainer>
-          </NotificationsProvider>
-        </MantineProvider>
-      </ColorSchemeProvider>
+      <Provider store={store}>
+        <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+          <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
+            <NotificationsProvider>
+              <ApplicationContainer>
+                <Component {...pageProps} />
+              </ApplicationContainer>
+            </NotificationsProvider>
+          </MantineProvider>
+        </ColorSchemeProvider>
+      </Provider>
     </>
   );
 }

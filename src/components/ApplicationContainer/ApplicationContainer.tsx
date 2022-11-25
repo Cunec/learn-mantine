@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   AppShell,
   useMantineTheme,
@@ -13,11 +12,6 @@ type LayoutProps = {
 
 export const ApplicationContainer = ({children}: LayoutProps) => {
   const theme = useMantineTheme();
-  const [opened, setOpened] = useState(false);
-
-  const openedCallback = (open : boolean) => {
-    setOpened(open);
-  }
 
   return (
     <>
@@ -30,13 +24,13 @@ export const ApplicationContainer = ({children}: LayoutProps) => {
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
       navbar={
-        <ApplicationNavbar opened={opened}/>
+        <ApplicationNavbar />
       }
       footer={
         <ApplicationFooter />
       }
       header={
-        <ApplicationHeader burgerOpenedCallback={openedCallback}/>
+        <ApplicationHeader />
       }
     >
       <div>

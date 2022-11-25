@@ -14,22 +14,16 @@ import {
   Stack,
 } from '@mantine/core';
 import { GoogleButton, TwitterButton } from '../SocialButtons/SocialButtons';
-import { useState } from 'react';
 import { Signin, Signup } from '../../pages/api/AuthenticationService';
 import { useRouter } from 'next/router';
+import { useAppSelector } from '../../hooks';
+import { selectAuthenticationForm, setAuthenticationForm } from '../../features/AuthenticationForm/AuthenticationFormSlice';
 
-export interface AuthenticationFormProps {
-  noShadow?: boolean;
-  //noPadding?: boolean;
-  //noSubmit?: boolean;
-  //style?: React.CSSProperties;
-  formtype: string;
-  logincallback: (loggedIn : boolean, userId : string) => void;
-}
+export function AuthenticationForm() {
+  // const [formType, setFormType] = useState<'register' | 'login'>(props.formtype === 'login' ? 'login' : 'register');
 
-export function AuthenticationForm(props: AuthenticationFormProps) {
-  // const [type, toggle] = useToggle(['login', 'register']);
-  const [formType, setFormType] = useState<'register' | 'login'>(props.formtype === 'login' ? 'login' : 'register');
+  const authenticationForm = useAppSelector(selectAuthenticationForm)
+
   const router = useRouter();
   const form = useForm({
     initialValues: {
@@ -46,24 +40,16 @@ export function AuthenticationForm(props: AuthenticationFormProps) {
   });
 
   const toggleFormType = () => {
-    setFormType((current) => (current === 'register' ? 'login' : 'register'));
+    // setAuthenticationForm((current) => (current === 'register' ? 'login' : 'register'));
+    setAuthenticationForm('register');
   };
 
   async function handleSubmit() {
-    // console.log("handleSubmit.. formType:", formType, ", email:", form.values.email);
-
-    if (formType === "login") {
+    if (authenticationForm.formType === "login") {
       const signin = await Signin(`/auth/signin`, { 
         "email" : form.values.email,
         "password" : form.values.password 
       })
-      // .then((response) => {
-      //   console.log(`signin ${response}`);
-
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      // })
 
       if (signin !== "Fail") {
         props.logincallback(true, signin);
@@ -87,19 +73,15 @@ export function AuthenticationForm(props: AuthenticationFormProps) {
           console.log(`HTTP 400 error occured`);
         }
       })
-      
-      // if (signup !== "") {
-      //   /// 
-      //   console.log("Your signup is completed. ");
-      // }
     }
   }
 
+
   return (
     <>
-    <Paper radius="md" p="xl" withBorder {...props}>
+    <Paper radius="md" p="xl" withBorder {...authenticationForm}>
       <Text size="lg" weight={500}>
-        Welcome to Mantine, {formType} with
+        Welcome to Mantine, {authenticationForm.formType} with
       </Text>
 
       <Group grow mb="md" mt="md">
@@ -112,7 +94,7 @@ export function AuthenticationForm(props: AuthenticationFormProps) {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           <>
-            {formType === 'register' && (
+            {authenticationForm.formType === 'register' && (
               <TextInput
               label="Nick name"
               placeholder="Your nick name"
@@ -141,7 +123,7 @@ export function AuthenticationForm(props: AuthenticationFormProps) {
           />
           </>
           <>
-            {formType === 'register' && (
+            {authenticationForm.formType === 'register' && (
               <Checkbox
               label="I accept terms and conditions"
               checked={form.values.terms}
@@ -159,12 +141,12 @@ export function AuthenticationForm(props: AuthenticationFormProps) {
             size="xs"
           >
           <>
-            {formType === 'register'
+            {authenticationForm.formType === 'register'
               ? 'Already have an account? Login'
               : "Don't have an account? Register"}
           </>
           </Anchor>
-          <Button type="submit">{upperFirst(formType)}</Button>
+          <Button type="submit">{upperFirst(authenticationForm.formType)}</Button>
         </Group>
       </form>
     </Paper>
