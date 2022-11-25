@@ -8,6 +8,7 @@ export function makeStore() {
     reducer: {
       navbar: navbarReducer,
       authenticationForm: authenticationFormReducer,
+      //authenticationFormModal: authenticationFormReducer,
       authenticationLogin: authenticationLoginReducer,
     },
   })

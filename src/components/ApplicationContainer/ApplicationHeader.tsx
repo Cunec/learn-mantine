@@ -5,25 +5,19 @@ import { AuthenticationForm } from "../AuthenticationForm/AuthenticationForm";
 import { CheckToken, Logout } from "../../pages/api/AuthenticationService";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { selectNavbar, setNavbar } from "../../features/ApplicationContainer/ApplicationNavbarSlice";
-import { selectAuthenticationForm, setAuthenticationForm } from "../../features/AuthenticationForm/AuthenticationFormSlice";
+import { selectAuthenticationForm, setFormModal, setFormType } from "../../features/AuthenticationForm/AuthenticationFormSlice";
 import { selectAuthenticationLogin, setAuthenticationLogin } from "../../features/AuthenticationForm/AuthenticationLoginSlice";
 
 export default function ApplicationHeader() {
   const theme = useMantineTheme();
-  const [authenticationModalOpened, setAuthenticationModalOpened] = useState(false);
-  // const [authenticationFormType, setAuthenticationFormType] = useState<'register' | 'login'>('register');
-  //const [loggedIn, setLoggedIn] = useState(false);
-  //const [userId, setUserId] = useState("");
+  //const [authenticationModalOpened, setAuthenticationModalOpened] = useState(false);
 
   useEffect(() => {
     async function checkUser() {
       const data = await CheckToken();
 
       if (data !== "null") {
-        //setLoggedIn(true);
-        //setUserId(data);
         dispatch(setAuthenticationLogin({loggedIn: true, userId: data}));
-        // dispatch(setAuthenticationLogin({loggedIn: true, userId: "data isn't async"}));
       }
     }
     
@@ -40,8 +34,6 @@ export default function ApplicationHeader() {
   // }
 
   const logout = () => {
-    // setLoggedIn(false);
-    // setUserId("");
     dispatch(setAuthenticationLogin({loggedIn: false, payload: ""}));
     Logout();
   }
@@ -50,14 +42,17 @@ export default function ApplicationHeader() {
   const dispatch = useAppDispatch()
   const navbarOpened = useAppSelector(selectNavbar)
 
-  //const authenticationForm = useAppSelector(selectAuthenticationForm)
   const authenticationLogin = useAppSelector(selectAuthenticationLogin)
+  const authenticationForm = useAppSelector(selectAuthenticationForm)
 
   return (
     <>
       <Modal
-        opened={authenticationModalOpened}
-        onClose={() => setAuthenticationModalOpened(false)}
+        //opened={authenticationModalOpened}
+        //onClose={() => setAuthenticationModalOpened(false)}
+        opened={authenticationForm.modal}
+        onClose={() => dispatch(setFormModal(false))}
+        closeOnClickOutside={false} /// 밖을 클릭해도 모달이 닫히지 않는다.
       >
         <AuthenticationForm />
       </Modal>
@@ -96,7 +91,7 @@ export default function ApplicationHeader() {
                 //component={Link}
                 //href="/auth/register"
                 // onClick={() => {setAuthenticationFormType('register'); setAuthenticationModalOpened(true);}}
-                onClick={() => {dispatch(setAuthenticationForm('register')); setAuthenticationModalOpened(true);}}
+                onClick={() => { dispatch(setFormType('register')); dispatch(setFormModal(true)); }}
                 variant="outline"
                 color="gray"
                 radius="xl">
@@ -105,7 +100,7 @@ export default function ApplicationHeader() {
               <Button
                 //component={Link}
                 //href="/auth/login"
-                onClick={() => {dispatch(setAuthenticationForm('login')); setAuthenticationModalOpened(true);}}
+                onClick={() => {dispatch(setFormType('login')); dispatch(setFormModal(true));}}
                 color="gray"
                 radius="xl">
                 Log In

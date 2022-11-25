@@ -13,16 +13,23 @@ import {
   Anchor,
   Stack,
 } from '@mantine/core';
-import { GoogleButton, TwitterButton } from '../SocialButtons/SocialButtons';
-import { Signin, Signup } from '../../pages/api/AuthenticationService';
-import { useRouter } from 'next/router';
-import { useAppSelector } from '../../hooks';
-import { selectAuthenticationForm, setFormType } from '../../features/AuthenticationForm/AuthenticationFormSlice';
+import { GoogleButton, TwitterButton } from '../../src/components/SocialButtons/SocialButtons';
+import { useState } from 'react';
+import { Signin, Signup } from '../../src/pages/api/AuthenticationService';
+import React from 'react';
 
-export function AuthenticationForm() {
-  const authenticationForm = useAppSelector(selectAuthenticationForm)
+export interface AuthenticationFormProps {
+  noShadow?: boolean;
+  //noPadding?: boolean;
+  //noSubmit?: boolean;
+  //style?: React.CSSProperties;
+  formtype: string;
+  loginCallback: (loggedIn : boolean, userId : string) => void;
+}
 
-  const router = useRouter();
+export function AuthenticationForm(props: AuthenticationFormProps) {
+  // const [type, toggle] = useToggle(['login', 'register']);
+  const [formType, setFormType] = useState<'register' | 'login'>(props.formtype === 'login' ? 'login' : 'register');
   const form = useForm({
     initialValues: {
       email: '',
@@ -38,48 +45,40 @@ export function AuthenticationForm() {
   });
 
   const toggleFormType = () => {
-    //setAuthenticationForm((current) => (current === 'register' ? 'login' : 'register'));
-    setFormType('register');
+    setFormType((current) => (current === 'register' ? 'login' : 'register'));
   };
 
   async function handleSubmit() {
-    if (authenticationForm.formType === "login") {
+    // console.log("handleSubmit.. formType:", formType, ", email:", form.values.email);
+
+    if (formType === "login") {
       const signin = await Signin(`/auth/signin`, { 
         "email" : form.values.email,
         "password" : form.values.password 
-      })
+      });
+      console.log("signin ", signin);
 
       if (signin !== "Fail") {
-        //props.logincallback(true, signin);
+        props.loginCallback(true, signin);
       }
-
     } else {
-      await Signup(`/auth/signup`, {
+      const signup = await Signup(`/auth/signup`, {
         "username" : form.values.nickName,
         "email" : form.values.email,
         "password" : form.values.password 
       })
-      .then((response) => {
-        console.log(`Your signup is completed. Welcome ${response}`);
-
-        router.push(`/`);
-      })
-      .catch((error) => {
-        console.log(error);
-
-        if (error.response.status === 400) {
-          console.log(`HTTP 400 error occured`);
-        }
-      })
+      console.log("signup ", signup);
+      
+      if (signup !== "") {
+        /// 
+      }
     }
   }
 
-
   return (
-    <>
-    <Paper radius="md" p="xl" withBorder {...authenticationForm}>
+    <Paper radius="md" p="xl" withBorder {...props}>
       <Text size="lg" weight={500}>
-        Welcome to Mantine, {authenticationForm.formType} with
+        Welcome to Mantine, {formType} with
       </Text>
 
       <Group grow mb="md" mt="md">
@@ -91,17 +90,15 @@ export function AuthenticationForm() {
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
-          <>
-            {authenticationForm.formType === 'register' && (
-              <TextInput
+          {formType === 'register' && (
+            <TextInput
               label="Nick name"
               placeholder="Your nick name"
               value={form.values.nickName}
               onChange={(event) => form.setFieldValue('nickName', event.currentTarget.value)}
-              />
-            )}
-          </>
-          <>
+            />
+          )}
+
           <TextInput
             required
             label="Email"
@@ -119,17 +116,16 @@ export function AuthenticationForm() {
             onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
             error={form.errors.password && 'Password should include at least 6 characters'}
           />
-          </>
-          <>
-            {authenticationForm.formType === 'register' && (
-              <Checkbox
+
+          {formType === 'register' && (
+            <Checkbox
               label="I accept terms and conditions"
               checked={form.values.terms}
               onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)}
-              />
-            )}
-          </>
+            />
+          )}
         </Stack>
+
         <Group position="apart" mt="xl">
           <Anchor
             component="button"
@@ -138,16 +134,13 @@ export function AuthenticationForm() {
             onClick={toggleFormType}
             size="xs"
           >
-          <>
-            {authenticationForm.formType === 'register'
+            {formType === 'register'
               ? 'Already have an account? Login'
               : "Don't have an account? Register"}
-          </>
           </Anchor>
-          <Button type="submit">{upperFirst(authenticationForm.formType)}</Button>
+          <Button type="submit">{upperFirst(formType)}</Button>
         </Group>
       </form>
     </Paper>
-    </>
   );
 }
