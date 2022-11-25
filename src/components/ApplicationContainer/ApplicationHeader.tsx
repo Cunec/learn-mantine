@@ -6,21 +6,24 @@ import { CheckToken, Logout } from "../../pages/api/AuthenticationService";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { selectNavbar, setNavbar } from "../../features/ApplicationContainer/ApplicationNavbarSlice";
 import { selectAuthenticationForm, setAuthenticationForm } from "../../features/AuthenticationForm/AuthenticationFormSlice";
+import { selectAuthenticationLogin, setAuthenticationLogin } from "../../features/AuthenticationForm/AuthenticationLoginSlice";
 
 export default function ApplicationHeader() {
   const theme = useMantineTheme();
   const [authenticationModalOpened, setAuthenticationModalOpened] = useState(false);
   // const [authenticationFormType, setAuthenticationFormType] = useState<'register' | 'login'>('register');
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [userId, setUserId] = useState("");
+  //const [loggedIn, setLoggedIn] = useState(false);
+  //const [userId, setUserId] = useState("");
 
   useEffect(() => {
     async function checkUser() {
       const data = await CheckToken();
 
       if (data !== "null") {
-        setLoggedIn(true);
-        setUserId(data);
+        //setLoggedIn(true);
+        //setUserId(data);
+        dispatch(setAuthenticationLogin({loggedIn: true, userId: data}));
+        // dispatch(setAuthenticationLogin({loggedIn: true, userId: "data isn't async"}));
       }
     }
     
@@ -37,8 +40,9 @@ export default function ApplicationHeader() {
   // }
 
   const logout = () => {
-    setLoggedIn(false);
-    setUserId("");
+    // setLoggedIn(false);
+    // setUserId("");
+    dispatch(setAuthenticationLogin({loggedIn: false, payload: ""}));
     Logout();
   }
 
@@ -46,7 +50,8 @@ export default function ApplicationHeader() {
   const dispatch = useAppDispatch()
   const navbarOpened = useAppSelector(selectNavbar)
 
-  const authenticationForm = useAppSelector(selectAuthenticationForm)
+  //const authenticationForm = useAppSelector(selectAuthenticationForm)
+  const authenticationLogin = useAppSelector(selectAuthenticationLogin)
 
   return (
     <>
@@ -71,10 +76,10 @@ export default function ApplicationHeader() {
             Test...
         </Text>
         <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          {loggedIn === true && (
+          {authenticationLogin.loggedIn === true && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
               <Text>
-                {userId}
+                {authenticationLogin.userId}
               </Text>
               <Button
                 onClick={() => {logout()}}
@@ -85,7 +90,7 @@ export default function ApplicationHeader() {
             </div>
           )}
           <>
-          {loggedIn === false && (
+          {authenticationLogin.loggedIn === false && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
               <Button
                 //component={Link}

@@ -3,10 +3,12 @@ import { AppState } from "../../store"
 
 export interface AuthenticationLoginState {
   loggedIn: boolean,
+  userId: String,
 }
 
 const initialState: AuthenticationLoginState = {
   loggedIn: false,
+  userId: "",
 }
 
 export const AuthenticationLoginSlice = createSlice({
@@ -14,8 +16,11 @@ export const AuthenticationLoginSlice = createSlice({
   initialState,
   reducers: {
     setAuthenticationLogin: (state, action) => {
-      state.loggedIn = action.payload
-    }
+      state.loggedIn = action.payload.loggedIn
+      state.userId = action.payload.userId
+
+      console.log("payload ? ", action.payload.loggedIn, action.payload.userId);
+    },
   }
 })
 
