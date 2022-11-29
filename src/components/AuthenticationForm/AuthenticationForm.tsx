@@ -20,6 +20,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { selectAuthenticationForm, setFormModal, setFormType } from '../../features/AuthenticationForm/AuthenticationFormSlice';
 
 export function AuthenticationForm() {
+  const dispatch = useAppDispatch();
   const authenticationForm = useAppSelector(selectAuthenticationForm)
 
   const dispatch = useAppDispatch()
@@ -53,7 +54,6 @@ export function AuthenticationForm() {
 
       /// 정상적으로 로그인이 되었다면 모달 창을 닫아준다.
       if (signin !== "Fail") {
-        //props.logincallback(true, signin);
         dispatch(setFormModal(false));
       }
 

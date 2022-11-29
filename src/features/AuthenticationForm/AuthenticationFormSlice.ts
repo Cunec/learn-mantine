@@ -7,14 +7,14 @@ export interface AuthenticationFormState {
   //noSubmit?: boolean,
   //style?: React.CSSProperties,
   //logincallback: (loggedIn : boolean, userId : string) => void,
-  formType: 'register' | 'login', /// 모달 창 로그인, 회원가입   
-  modal: boolean,                 /// 모달 창 켜짐/꺼짐
+  formType: 'register' | 'login',
+  modal: boolean,
 }
 
 const initialState: AuthenticationFormState = {
   noShadow: false,
-  formType: 'register',
-  modal: false,
+  formType: 'register', /// 로그인, 회원가입 모달 창 타입.
+  modal: false,         /// 모달 창 켜짐/꺼짐.
 }
 
 export const AuthenticationFormSlice = createSlice({

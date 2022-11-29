@@ -15,6 +15,7 @@ export default function ApplicationHeader() {
     async function checkUser() {
       const data = await CheckToken();
 
+      /// 토큰 값이 있을 경우 로그인 유지.
       if (data !== "null") {
         dispatch(setAuthenticationLogin({loggedIn: true, userId: data}));
       }
@@ -28,7 +29,6 @@ export default function ApplicationHeader() {
     Logout();
   }
 
-  //
   const dispatch = useAppDispatch()
   const navbarOpened = useAppSelector(selectNavbar)
 
