@@ -3,7 +3,6 @@ import axios from "axios"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
-
 interface Board {
   id : string
   title : string
@@ -17,7 +16,7 @@ export default function Board() {
 	const [items, setItems] = useState<Board[]>([]);
 
 	useEffect(() => {
-		let isCompleted = false;
+		// let isCompleted = false;
 
 		async function fetchBoard() {
 			const result = await axios.get(`http://localhost:8080/board/list`)
@@ -28,17 +27,17 @@ export default function Board() {
           setItems(response.data.responseData);
         });
 
-			if (!isCompleted) {
+			// if (!isCompleted) {
 				// setItems(result);
-			}
+			// }
 		}
 
 		fetchBoard();
 
-		return() => {
-      isCompleted = true;
-			console.log("isCompleted true!");
-		};
+		// return() => {
+    //   isCompleted = true;
+		// 	console.log("isCompleted true!");
+		// };
 			
 	}, []);
 
@@ -67,7 +66,7 @@ export default function Board() {
       </div>
       <Button 
         component={Link}
-        href="/CreatePost"
+        href="/board/create"
         color="gray"
       >
         Create Post

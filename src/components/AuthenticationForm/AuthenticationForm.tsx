@@ -16,10 +16,11 @@ import {
 import { GoogleButton, TwitterButton } from '../SocialButtons/SocialButtons';
 import { Signin, Signup } from '../../pages/api/AuthenticationService';
 import { useRouter } from 'next/router';
-import { useAppSelector } from '../../hooks';
-import { selectAuthenticationForm, setFormType } from '../../features/AuthenticationForm/AuthenticationFormSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { selectAuthenticationForm, setFormModal, setFormType } from '../../features/AuthenticationForm/AuthenticationFormSlice';
 
 export function AuthenticationForm() {
+  const dispatch = useAppDispatch();
   const authenticationForm = useAppSelector(selectAuthenticationForm)
 
   const router = useRouter();
@@ -50,7 +51,9 @@ export function AuthenticationForm() {
       })
 
       if (signin !== "Fail") {
-        //props.logincallback(true, signin);
+        console.log("signin !== Fail");
+        //router.push(`/`); // 다시 첫페이지로 돌아갈 필요 없음.
+        dispatch(setFormModal(false));
       }
 
     } else {

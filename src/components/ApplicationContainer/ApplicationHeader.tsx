@@ -10,12 +10,12 @@ import { selectAuthenticationLogin, setAuthenticationLogin } from "../../feature
 
 export default function ApplicationHeader() {
   const theme = useMantineTheme();
-  //const [authenticationModalOpened, setAuthenticationModalOpened] = useState(false);
 
   useEffect(() => {
     async function checkUser() {
       const data = await CheckToken();
 
+      /// 토큰 값이 있을 경우 로그인 유지.
       if (data !== "null") {
         dispatch(setAuthenticationLogin({loggedIn: true, userId: data}));
       }
@@ -24,21 +24,11 @@ export default function ApplicationHeader() {
     checkUser();
   })
 
-  // const logincallback = (loggedIn : boolean, userId : string) => {
-  //   /// 로그인 라벨 띄우기.
-  //   setLoggedIn(loggedIn);
-  //   /// 유저 아이디 세팅.
-  //   setUserId(userId);
-  //   /// 로그인 모달 닫기.
-  //   setAuthenticationModalOpened(false);
-  // }
-
   const logout = () => {
     dispatch(setAuthenticationLogin({loggedIn: false, payload: ""}));
     Logout();
   }
 
-  //
   const dispatch = useAppDispatch()
   const navbarOpened = useAppSelector(selectNavbar)
 
