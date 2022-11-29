@@ -16,12 +16,14 @@ import {
 import { GoogleButton, TwitterButton } from '../SocialButtons/SocialButtons';
 import { Signin, Signup } from '../../pages/api/AuthenticationService';
 import { useRouter } from 'next/router';
-import { useAppSelector } from '../../hooks';
-import { selectAuthenticationForm, setFormType } from '../../features/AuthenticationForm/AuthenticationFormSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { selectAuthenticationForm, setFormModal, setFormType } from '../../features/AuthenticationForm/AuthenticationFormSlice';
 
 export function AuthenticationForm() {
   const authenticationForm = useAppSelector(selectAuthenticationForm)
 
+  const dispatch = useAppDispatch()
+  
   const router = useRouter();
   const form = useForm({
     initialValues: {
@@ -49,8 +51,10 @@ export function AuthenticationForm() {
         "password" : form.values.password 
       })
 
+      /// 정상적으로 로그인이 되었다면 모달 창을 닫아준다.
       if (signin !== "Fail") {
         //props.logincallback(true, signin);
+        dispatch(setFormModal(false));
       }
 
     } else {

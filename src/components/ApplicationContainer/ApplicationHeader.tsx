@@ -10,7 +10,6 @@ import { selectAuthenticationLogin, setAuthenticationLogin } from "../../feature
 
 export default function ApplicationHeader() {
   const theme = useMantineTheme();
-  //const [authenticationModalOpened, setAuthenticationModalOpened] = useState(false);
 
   useEffect(() => {
     async function checkUser() {
@@ -23,15 +22,6 @@ export default function ApplicationHeader() {
     
     checkUser();
   })
-
-  // const logincallback = (loggedIn : boolean, userId : string) => {
-  //   /// 로그인 라벨 띄우기.
-  //   setLoggedIn(loggedIn);
-  //   /// 유저 아이디 세팅.
-  //   setUserId(userId);
-  //   /// 로그인 모달 닫기.
-  //   setAuthenticationModalOpened(false);
-  // }
 
   const logout = () => {
     dispatch(setAuthenticationLogin({loggedIn: false, payload: ""}));
@@ -48,8 +38,6 @@ export default function ApplicationHeader() {
   return (
     <>
       <Modal
-        //opened={authenticationModalOpened}
-        //onClose={() => setAuthenticationModalOpened(false)}
         opened={authenticationForm.modal}
         onClose={() => dispatch(setFormModal(false))}
         closeOnClickOutside={false} /// 밖을 클릭해도 모달이 닫히지 않는다.
