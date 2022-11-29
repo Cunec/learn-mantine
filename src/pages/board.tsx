@@ -58,9 +58,14 @@ export default function Board() {
       <div>
         {items.map((item) => (
           <div key={item.id}>
-            <p>
-              title : {item.title}, writer : {item.writer}
-            </p>
+            <div>
+              <p>
+                title : {item.title} writer : {item.writer}
+              </p>
+              <p>
+                content : {item.content}
+              </p>
+            </div>
           </div>
         ))}
       </div>

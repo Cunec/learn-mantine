@@ -30,13 +30,13 @@ export default function CreatePost() {
   });
   
   function handleSubmit() {
-    console.log("submit..");
-
     Create(`/board/create`, {
       "title": titleName,
       "content": editor?.getHTML(),
       "writer": authenticationLogin.userId
     });
+    
+
   }
 
   function test() {
@@ -52,12 +52,8 @@ export default function CreatePost() {
           align="flex-start"
           direction="column"
     >
-      <Text>
-        ...
-      </Text>
       <Group>
         <TextInput value={titleName} onChange={(event) => setTitleName(event.currentTarget.value)}></TextInput>
-        <Text>Writer {authenticationLogin.userId}</Text>
       </Group>
       <RichTextEditor editor={editor}>
         <RichTextEditor.Toolbar sticky stickyOffset={60}>
@@ -102,13 +98,13 @@ export default function CreatePost() {
 
         <RichTextEditor.Content />
       </RichTextEditor>
-      <Button onClick={handleSubmit}
+      <Button onClick={handleSubmit} color="gray"
       >
         Submit
       </Button>
-      <Button onClick={test}>
+      {/* <Button onClick={test}>
         Test
-      </Button>
+      </Button> */}
     </Flex>
     </>
   ) 

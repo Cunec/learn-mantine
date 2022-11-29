@@ -5,8 +5,9 @@ export interface NavbarState {
   navbarOpened: boolean,
 }
 
+
 const initialState: NavbarState = {
-  navbarOpened: false,
+  navbarOpened: false, /// 네비게이션 바가 열렸는지 닫혔는지 확인하는 변수.
 }
 
 export const applicationNavbarSlice = createSlice({

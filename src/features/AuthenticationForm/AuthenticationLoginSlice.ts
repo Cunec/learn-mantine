@@ -7,8 +7,8 @@ export interface AuthenticationLoginState {
 }
 
 const initialState: AuthenticationLoginState = {
-  loggedIn: false,
-  userId: "",
+  loggedIn: false,  /// 로그인이 되어 있는지 여부.
+  userId: "",       /// 로그인 된 사용자 아이디.
 }
 
 export const AuthenticationLoginSlice = createSlice({
