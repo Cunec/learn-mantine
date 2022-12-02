@@ -22,8 +22,6 @@ import { selectAuthenticationForm, setFormModal, setFormType } from '../../featu
 export function AuthenticationForm() {
   const dispatch = useAppDispatch();
   const authenticationForm = useAppSelector(selectAuthenticationForm)
-
-  const dispatch = useAppDispatch()
   
   const router = useRouter();
   const form = useForm({
